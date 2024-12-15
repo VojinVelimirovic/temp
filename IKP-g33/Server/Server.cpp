@@ -40,8 +40,8 @@ DWORD WINAPI processRequest(LPVOID param) {
 				printf("Thread ID %lu: Processing allocation request for %d bytes.\n", threadId, request.value);
 				int allocatedBlockId = (int)allocate_memory(request.value);
 				if (allocatedBlockId != -1) {
-					printf("Thread ID %lu: SUCCESS: Allocated %d bytes at id: %d\n\n", threadId, request.value, allocatedBlockId);
-					snprintf(responseBuffer, BUFFER_SIZE, "SUCCESS: Allocated %d bytes at id: %d\n\n", request.value, allocatedBlockId);
+					printf("Thread ID %lu: SUCCESS: Allocated %d bytes at address: %d\n\n", threadId, request.value, allocatedBlockId);
+					snprintf(responseBuffer, BUFFER_SIZE, "SUCCESS: Allocated %d bytes at address: %d\n\n", request.value, allocatedBlockId);
 				}
 				else {
 					printf("ERROR: Memory allocation failed for %d bytes.\n", request.value);
@@ -49,15 +49,15 @@ DWORD WINAPI processRequest(LPVOID param) {
 				}
 			}
 			else {
-				printf("Thread ID %lu: Processing deallocation request for id: %d.\n", threadId, request.value);
+				printf("Thread ID %lu: Processing deallocation request for address: %d.\n", threadId, request.value);
 				free_memory((void*)request.value);
 				if (free_memory_error == 0) {
-					printf("Thread ID %lu: SUCCESS: Memory freed at id: %d\n", threadId, request.value);
-					snprintf(responseBuffer, BUFFER_SIZE, "SUCCESS: Memory freed at id: %d\n\n", request.value);
+					printf("Thread ID %lu: SUCCESS: Memory freed at address: %d\n", threadId, request.value);
+					snprintf(responseBuffer, BUFFER_SIZE, "SUCCESS: Memory freed at address: %d\n\n", request.value);
 				}
 				else {
-					printf("ERROR: Failed to free memory at id: %d.\n", request.value);
-					snprintf(responseBuffer, BUFFER_SIZE, "ERROR: Failed to free memory at id: %d.\n\n", request.value);
+					printf("ERROR: Failed to free memory at address: %d.\n", request.value);
+					snprintf(responseBuffer, BUFFER_SIZE, "ERROR: Failed to free memory at address: %d.\n\n", request.value);
 				}
 			}
 

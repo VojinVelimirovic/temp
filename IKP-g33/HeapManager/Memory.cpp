@@ -140,15 +140,15 @@ void* allocate_memory(int size) {
 }
 
 // funckija za oslobadjanje bloka memorije na odredjenoj adresi
-void free_memory(void* id) {
+void free_memory(void* address) {
     free_memory_error = 0;
     // iz blockAddressHashMap izvlacimo trenutnu adresu i konvertujemo je u int
-    int current_address = (int)(intptr_t)get(blockAddressHashMap, (intptr_t)id);
+    int current_address = (int)(intptr_t)get(blockAddressHashMap, (intptr_t)address);
 
     // ERROR: Adresa ne postoji u hashmapi adresa
     if (current_address == -1) {
         free_memory_error = 1;
-        printf("ERROR: Invalid address. There is no record for address: %d.\n", (int)id);
+        printf("ERROR: Invalid address. There is no record for address: %d.\n", current_address);
         return;
     }
 
@@ -243,7 +243,7 @@ void free_memory(void* id) {
     remove(blockHashMap, current_address);
 
     // za blockAddressHashMap koristimo njegovu originalnu adresu koja je zadata kao argument metode
-    remove(blockAddressHashMap, (intptr_t)id);
+    remove(blockAddressHashMap, (intptr_t)address);
 
     //formListFromSegments(list_of_free_segments, segments, totalSegments);
     //printList(list_of_free_segments);
