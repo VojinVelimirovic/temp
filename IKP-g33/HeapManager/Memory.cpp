@@ -197,11 +197,9 @@ void free_memory(void* address) {
     // ako ih je preko 5 brisemo one koji visak slobodnih segmenata sa pocetka
     if (freeSegmentsCount > 5) {
         //broj segmenata koje treba da izbrisemo
-        int segmentsToRemove = freeSegmentsCount - 5;
-        printf("Segments to remove: %d\n", segmentsToRemove);
         // prolazimo kroz sve segmente. kad god naidjemo na slobodan segment svim segmentima nakon njega se smanjuje adresa za 1
         // ovo se desava dok ne izbacimo segmentsToRemove broj segmenata
-        for (int i = 0; i < totalSegments && segmentsToRemove > 0; i++) {
+        for (int i = 0; i < totalSegments && freeSegmentsCount > 0; i++) {
             if (segments[i].isFree) {
                 // Za svaki ZAUZET segment nakon slobodnog segmenta kojeg izbacujemo
                 // proveravamo da li postoji blok cija se start adresa podudara sa njegovom adresom
@@ -238,12 +236,12 @@ void free_memory(void* address) {
 
                 // Ukupan broj segmenata se menja
                 totalSegments--;
-                segmentsToRemove--;
+                freeSegmentsCount--;
                 i--; //posto su se u segments svi pomerili za 1 u nazad moramo i da pomerimo u nazad
             }
         }
+        addSegments(5);
     }
-
     formListFromSegments(list_of_free_segments, segments, totalSegments);
     printList(list_of_free_segments);
 }
